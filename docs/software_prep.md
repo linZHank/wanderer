@@ -15,7 +15,23 @@ This may take a while...
 config emacs by going to home directory `$ cd ~` then `$ git clone https://github.com/linZHank/.emacs.d.git`. Fire up emacs `$ emacs` to start installing packages and setting things up.
 
 # Set static ip address
-???
+1. Manually editing "/etc/network/interfaces" to become this with one extra line:
+```
+# interfaces(5) file used by ifup(8) and ifdown(8)
+# Include files from /etc/network/interfaces.d:
+source-directory /etc/network/interfaces.d
+
+# This line is a custom edit.
+source interfaces.d/eth0
+```
+2. Inside of "/etc/network/interfaces.d/" add file "eth0". Content something like this
+```
+auto eth0
+iface eth0 inet static
+address 192.168.1.150
+netmask 255.255.255.0
+gateway 192.168.1.1
+```
 
 # Install ROS-Kinetic
 `$ cd ~` then `$ git clone https://github.com/linZHank/installROSTX2.git`<br/>
