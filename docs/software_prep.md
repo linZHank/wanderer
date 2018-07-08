@@ -13,7 +13,7 @@ This may take a while...
 ## Install emacs
 `$ sudo apt install emacs`
 
-config emacs by going to home directory `$ cd ~` then `$ git clone https://github.com/linZHank/.emacs.d.git$`. Fire up emacs `$ emacs` to start installing packages and setting things up.
+config emacs by going to home directory `$ cd ~` then `$ git clone https://github.com/linZHank/.emacs.d.git`. Fire up emacs `$ emacs` to start installing packages and setting things up.
 
 # Install ROS-Kinetic
 `$ cd ~` then `$ git clone https://github.com/linZHank/installROSTX2.git`
