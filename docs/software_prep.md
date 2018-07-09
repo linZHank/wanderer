@@ -1,20 +1,22 @@
-# Jetpack Installation
+# Software Preparation Guide for Wanderer Robot.
+This guide helps you with Wanderer's software installation.
 
-Find out Jetpack download link and related materials [here](https://developer.nvidia.com/embedded/jetpack). Full-flash TX2 with Jetpack 3.2
+## [Jetpack Installation](https://developer.nvidia.com/embedded/jetpack)
+Find out Jetpack download link and related materials [here](https://developer.nvidia.com/embedded/jetpack). Full-flash TX2 with Jetpack 3.2 (Take a deep breathe, let's rock.).
 
-# Post Jetpack
-### Update and upgrade
+## Post Jetpack
+#### Update and upgrade
 ```
 $ sudo apt update
 $ sudo apt upgrade
 ```
 This may take a while...
 
-# Install emacs
+## Install emacs
 `$ sudo apt install emacs`<br/>
 config emacs by going to home directory `$ cd ~` then `$ git clone https://github.com/linZHank/.emacs.d.git`. Fire up emacs `$ emacs` to start installing packages and setting things up.
 
-# Set static ip address
+## Set static ip address
 1. Manually editing "/etc/network/interfaces" to become this with one extra line:
 ```
 # interfaces(5) file used by ifup(8) and ifdown(8)
@@ -33,12 +35,12 @@ netmask 255.255.255.0
 gateway 192.168.1.1
 ```
 
-# Install ROS-Kinetic
+## Install ROS-Kinetic
 `$ cd ~` then `$ git clone https://github.com/linZHank/installROSTX2.git`<br/>
 `$ cd installROSTX2` then `$ ./installROS.sh`<br/>
 This will install ros-kinetic-base and neccessary tools including [catkin-command-line-tools](http://catkin-tools.readthedocs.io/en/latest/)
 
-# Install [libfreenect2](https://github.com/OpenKinect/libfreenect2/blob/master/README.md#linux)
+## Install [libfreenect2](https://github.com/OpenKinect/libfreenect2/blob/master/README.md#linux)
 * Download libfreenect2 source
     ```
     $ git clone https://github.com/OpenKinect/libfreenect2.git
@@ -68,7 +70,7 @@ This will install ros-kinetic-base and neccessary tools including [catkin-comman
 * Run the test program: `./bin/Protonect`
 * Run OpenNI2 test (optional): `sudo apt-get install openni2-utils && sudo make install-openni2 && NiViewer2`. Environment variable `LIBFREENECT2_PIPELINE` can be set to `cl`, `cuda`, etc to specify the pipeline.
 
-# Install [IAI_Kinect 2](https://github.com/code-iai/iai_kinect2#install)
+## Install [IAI_Kinect 2](https://github.com/code-iai/iai_kinect2#install)
 1. Clone this repository into your catkin workspace, install the dependencies and build it:
 ```
 cd ~/ros_ws/src/
@@ -81,8 +83,8 @@ catkin build --cmake-args -DCMAKE_BUILD_TYPE="Release"
 2. Connect your sensor and run kinect2_bridge:
 `$ roslaunch kinect2_bridge kinect2_bridge.launch`
 
-# Install [create_autonomy](https://github.com/AutonomyLab/create_autonomy.git)
-### Compile from source
+## Install [create_autonomy](https://github.com/AutonomyLab/create_autonomy.git)
+#### Compile from source
 1. Create a catkin workspace  
     ```
     $ cd ~
@@ -111,7 +113,7 @@ catkin build --cmake-args -DCMAKE_BUILD_TYPE="Release"
     $ sudo usermod -a -G dialout nvidia
     ```
 6. Logout and login for permission to take effect
-### Running the driver
+#### Running the driver
 
 1. After compiling from source, don't forget to source your workspace:  
     ```
