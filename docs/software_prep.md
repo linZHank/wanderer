@@ -3,7 +3,7 @@
 Find out Jetpack download link and related materials [here](https://developer.nvidia.com/embedded/jetpack). Full-flash TX2 with Jetpack 3.2
 
 # Post Jetpack
-## Update and upgrade
+### Update and upgrade
 ```
 $ sudo apt update
 $ sudo apt upgrade
@@ -82,6 +82,7 @@ catkin build --cmake-args -DCMAKE_BUILD_TYPE="Release"
 `$ roslaunch kinect2_bridge kinect2_bridge.launch`
 
 # Install [create_autonomy](https://github.com/AutonomyLab/create_autonomy.git)
+### Compile from source
 1. Create a catkin workspace  
     ```
     $ cd ~
@@ -110,7 +111,7 @@ catkin build --cmake-args -DCMAKE_BUILD_TYPE="Release"
     $ sudo usermod -a -G dialout nvidia
     ```
 6. Logout and login for permission to take effect
-## Running the driver
+### Running the driver
 
 1. After compiling from source, don't forget to source your workspace:  
     ```
