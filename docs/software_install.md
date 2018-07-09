@@ -1,8 +1,8 @@
-# Software Preparation Guide for Wanderer Robot.
-This guide helps you with Wanderer's software installation.
+# Software Installation Guide for Wanderer Robot.
+This guide helps you with Wanderer's software installation. A brand new Jetson TX2 is about to become a fully prepared iRobot rider (Take a deep breathe, let's rock.).
 
 ## [Jetpack Installation](https://developer.nvidia.com/embedded/jetpack)
-Find out Jetpack download link and related materials [here](https://developer.nvidia.com/embedded/jetpack). Full-flash TX2 with Jetpack 3.2 (Take a deep breathe, let's rock.).
+Find out Jetpack download link and related materials [here](https://developer.nvidia.com/embedded/jetpack). Full-flash TX2 with Jetpack 3.2.
 
 ## Post Jetpack
 #### Update and upgrade
