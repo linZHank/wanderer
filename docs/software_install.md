@@ -128,3 +128,6 @@ $ roslaunch ca_driver create_2.launch
 ```
 $ roslaunch ca_tools joy_teleop.launch [joy_config:=log710]
 ```
+
+## Install [rtabmap_ros](http://wiki.ros.org/rtabmap_ros)
+`$ sudo apt-get install ros-kinetic-rtabmap-ros`
