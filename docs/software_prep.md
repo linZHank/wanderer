@@ -80,3 +80,48 @@ catkin build --cmake-args -DCMAKE_BUILD_TYPE="Release"
 ```
 2. Connect your sensor and run kinect2_bridge:
 `$ roslaunch kinect2_bridge kinect2_bridge.launch`
+
+# Install [create_autonomy](https://github.com/AutonomyLab/create_autonomy.git)
+1. Create a catkin workspace  
+    ```
+    $ cd ~
+    $ mkdir -p create_ws/src  
+    $ cd create_ws  
+    $ catkin init  
+    ```
+2. Clone this repo  
+    ```
+    $ cd ~/create_ws/src
+    $ git clone https://github.com/AutonomyLab/create_autonomy.git  
+    ```
+3. Install dependencies  
+    ```
+    $ cd ~/create_ws
+    $ rosdep update  
+    $ rosdep install --from-paths src -i  
+    ```
+4. Build  
+    ```
+    $ cd ~/create_ws
+    $ catkin build
+    ```
+5. In order to connect to Create over USB, ensure your user is in the dialout group
+    ```
+    $ sudo usermod -a -G dialout nvidia
+    ```
+6. Logout and login for permission to take effect
+## Running the driver
+
+1. After compiling from source, don't forget to source your workspace:  
+    ```
+    $ source ~/create_ws/devel/setup.bash
+    ```
+2. Connect TX2 to Create's 7-pin serial port, plug logitech joy-pad wireless receiver in TX2's usb-hub.
+3. For Create 2 (Roomba 600/700 series):
+```
+$ roslaunch ca_driver create_2.launch
+```
+4. Remote control using a Logitech F710 joy-pad
+```
+$ roslaunch ca_tools joy_teleop.launch [joy_config:=log710]
+```
