@@ -82,6 +82,7 @@ catkin build --cmake-args -DCMAKE_BUILD_TYPE="Release"
 ```
 2. Connect your sensor and run kinect2_bridge:
 `$ roslaunch kinect2_bridge kinect2_bridge.launch`
+3. Calibrate your sensor using the `kinect2_calibration`. Follow the [instructions](https://github.com/code-iai/iai_kinect2/tree/master/kinect2_calibration#calibrating-the-kinect-one). Beware, you will have to take hundreds of screenshots manually, which is really time consuming and boring. 
 
 ## Install [create_autonomy](https://github.com/AutonomyLab/create_autonomy.git)
 #### Compile from source
