@@ -28,8 +28,8 @@ This may take a while...
 `$ sudo apt install emacs`<br/>
 config emacs by going to home directory `$ cd ~` then `$ git clone https://github.com/linZHank/.emacs.d.git`. Fire up emacs `$ emacs` to start installing packages and setting things up.
 
-~~## Set static ip address
-You may reference to this [post](https://devtalk.nvidia.com/default/topic/988803/jetson-tx1/how-to-set-tx1-to-use-static-ip-on-ethernet-port/post/5061512/#5061512)
+~~## Set static ip address~~
+~~You may reference to this [post](https://devtalk.nvidia.com/default/topic/988803/jetson-tx1/how-to-set-tx1-to-use-static-ip-on-ethernet-port/post/5061512/#5061512)~~
 
 ## Install ROS-Kinetic
 `$ cd ~` then `$ git clone https://github.com/linZHank/installROSTX2.git`<br/>
