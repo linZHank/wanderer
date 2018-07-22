@@ -37,6 +37,7 @@ config emacs by going to home directory `$ cd ~` then `$ git clone https://githu
 This will install ros-kinetic-base and neccessary tools including [catkin-command-line-tools](http://catkin-tools.readthedocs.io/en/latest/)
 
 ## (Optional) Install [libfreenect2](https://github.com/OpenKinect/libfreenect2/blob/master/README.md#linux)
+> You will need this if you were using a Kinect V2 RGB-D camera
 * Download libfreenect2 source
     ```
     $ git clone https://github.com/OpenKinect/libfreenect2.git
@@ -66,7 +67,8 @@ This will install ros-kinetic-base and neccessary tools including [catkin-comman
 * Run the test program: `./bin/Protonect`
 * Run OpenNI2 test (optional): `sudo apt-get install openni2-utils && sudo make install-openni2 && NiViewer2`. Environment variable `LIBFREENECT2_PIPELINE` can be set to `cl`, `cuda`, etc to specify the pipeline.
 
-## Install [IAI_Kinect 2](https://github.com/code-iai/iai_kinect2#install)
+## (Optional) Install [IAI_Kinect 2](https://github.com/code-iai/iai_kinect2#install)
+> You will need this if you were using a Kinect V2 RGB-D camera and you want to use it in ROS
 1. Clone this repository into your catkin workspace, install the dependencies and build it:
 ```
 cd ~/ros_ws/src/
