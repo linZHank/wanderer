@@ -127,6 +127,20 @@ $ roslaunch ca_driver create_2.launch
 ```
 $ roslaunch ca_tools joy_teleop.launch [joy_config:=log710]
 ```
+## Install [realsense2 ROS wrapper](https://github.com/intel-ros/realsense)
+1. If not using Kinect v2, and no libfreenect2 and iai_kinect2 were configured, then you'll have to install some dependencies:
+```
+sudo apt install ros-kinetic-cv-bridge ros-kinetic-image-common
+```
+2. Clone latest realsense2 wrapper
+```
+cd ~/ros_ws/src/
+git clone https://github.com/intel-ros/realsense.git
+cd ..
+catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release
+```
+3. Test 
+roslaunch realsense2_camera rs_camera.launch
 
 ## Install [rtabmap_ros](http://wiki.ros.org/rtabmap_ros)
 `$ sudo apt-get install ros-kinetic-rtabmap-ros`
