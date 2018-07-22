@@ -5,7 +5,7 @@ This guide helps you with Wanderer's software installation. A brand new Jetson T
 Find out Jetpack download link and related materials [here](https://developer.nvidia.com/embedded/jetpack). Full-flash TX2 with Jetpack 3.2.
 
 ## Post Flash
-**Caution: DO NOT** `$ sudo apt upgrade` before you build the patched kernel**!!!** 
+**Caution: DO NOT** `$ sudo apt upgrade` before you build the patched kernel!!! 
 #### Patch kernel \& install librealsense 
 1. Open terminal by `Ctrl``Alt``t`, clone the repo that contains all the tools we are going to need.
 ```
@@ -17,6 +17,7 @@ git checkout v0.9
 2. Build patched kernel `$ ./buildPatchedKernelTX.sh` and reboot TX2 after installation.
 3. Install ***librealsense*** `$ ./installLibrealsense.sh`
 #### Update and upgrade
+> Again, **DO NOT** perform `upgrade` before you build the patched kernel!!!
 ```
 $ sudo apt update
 $ sudo apt upgrade
@@ -27,24 +28,8 @@ This may take a while...
 `$ sudo apt install emacs`<br/>
 config emacs by going to home directory `$ cd ~` then `$ git clone https://github.com/linZHank/.emacs.d.git`. Fire up emacs `$ emacs` to start installing packages and setting things up.
 
-## Set static ip address
-1. Manually editing "/etc/network/interfaces" to become this with one extra line:
-```
-# interfaces(5) file used by ifup(8) and ifdown(8)
-# Include files from /etc/network/interfaces.d:
-source-directory /etc/network/interfaces.d
-
-# This line is a custom edit.
-source interfaces.d/eth0
-```
-2. Inside of "/etc/network/interfaces.d/" add file "eth0". Content something like this
-```
-auto eth0
-iface eth0 inet static
-address 192.168.1.150
-netmask 255.255.255.0
-gateway 192.168.1.1
-```
+~~## Set static ip address
+You may reference to this [post](https://devtalk.nvidia.com/default/topic/988803/jetson-tx1/how-to-set-tx1-to-use-static-ip-on-ethernet-port/post/5061512/#5061512)
 
 ## Install ROS-Kinetic
 `$ cd ~` then `$ git clone https://github.com/linZHank/installROSTX2.git`<br/>
