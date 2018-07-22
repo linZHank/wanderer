@@ -2,4 +2,5 @@
 
 ## [iRobot Create2](https://www.irobot.com/About-iRobot/STEM/Create-2.aspx)
 Create 2 is a good toy for mobile robot development. 
-![](https://www.irobotweb.com/-/media/MainSite/Images/About/STEM/Create/create-overview.png?h=224&la=en&w=224)
+
+![](https://www.irobotweb.com/-/media/MainSite/Images/About/STEM/Create/create-overview.png?h=300&la=en&w=300)
