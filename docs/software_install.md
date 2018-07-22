@@ -4,7 +4,18 @@ This guide helps you with Wanderer's software installation. A brand new Jetson T
 ## [Jetpack](https://developer.nvidia.com/embedded/jetpack) Installation
 Find out Jetpack download link and related materials [here](https://developer.nvidia.com/embedded/jetpack). Full-flash TX2 with Jetpack 3.2.
 
-## Post Jetpack
+## Post Flash
+**Caution: DO NOT** `$ sudo apt upgrade` before you build the patched kernel**!!!** 
+#### Patch kernel \& install librealsense 
+1. Open terminal by `Ctrl``Alt``t`, clone the repo that contains all the tools we are going to need.
+```
+cd $HOME
+git clone https://github.com/jetsonhacks/buildLibrealsense2TX
+cd buildLibrealsense2TX
+git checkout v0.9
+```
+2. Build patched kernel `$ ./buildPatchedKernelTX.sh` and reboot TX2 after installation.
+3. Install ***librealsense*** `$ ./installLibrealsense.sh`
 #### Update and upgrade
 ```
 $ sudo apt update
