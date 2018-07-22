@@ -36,7 +36,7 @@ config emacs by going to home directory `$ cd ~` then `$ git clone https://githu
 `$ cd installROSTX2` then `$ ./installROS.sh`<br/>
 This will install ros-kinetic-base and neccessary tools including [catkin-command-line-tools](http://catkin-tools.readthedocs.io/en/latest/)
 
-## Install [libfreenect2](https://github.com/OpenKinect/libfreenect2/blob/master/README.md#linux)
+## (Optional) Install [libfreenect2](https://github.com/OpenKinect/libfreenect2/blob/master/README.md#linux)
 * Download libfreenect2 source
     ```
     $ git clone https://github.com/OpenKinect/libfreenect2.git
@@ -78,7 +78,7 @@ catkin build --cmake-args -DCMAKE_BUILD_TYPE="Release"
 ```
 2. Connect your sensor and run kinect2_bridge:
 `$ roslaunch kinect2_bridge kinect2_bridge.launch`
-3. Calibrate your sensor using the `kinect2_calibration`. Follow the [instructions](https://github.com/code-iai/iai_kinect2/tree/master/kinect2_calibration#calibrating-the-kinect-one). Beware, you will have to take hundreds of screenshots manually, which is really time consuming and boring. 
+3. Calibrate your sensor using the `kinect2_calibration`. Follow the [instructions](https://github.com/code-iai/iai_kinect2/tree/master/kinect2_calibration#calibrating-the-kinect-one). Beware, you will have to take hundreds of screenshots manually, which is really time consuming and boring (Ask a girl to help you out XD). 
 
 ## Install [create_autonomy](https://github.com/AutonomyLab/create_autonomy.git)
 #### Compile from source
