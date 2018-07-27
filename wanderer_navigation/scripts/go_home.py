@@ -7,14 +7,17 @@ import tf
 import numpy as np
 import geometry_msgs.msg
 
+def close2target(x, y):
+  return np.linalg.norm([x, y]) <= 0.1
+  
 class WandererDriver():
   """
   WandererDriver drives wanderer robot
   """
   def __init__(self):
     # parameters
-    self.pos_x = inf
-    self.pos_y = inf
+    self.pos_x = np.inf
+    self.pos_y = np.inf
     self.posListener = tf.TransformListener()
     self.cmd = geometry_msgs.msg.Twist()
     self.stop_cmd = geometry_msgs.msg.Twist()
@@ -29,19 +32,21 @@ class WandererDriver():
     """
     rate = rospy.Rate(10.0)
     while not rospy.is_shutdown():
-      (trans,rot) = self.posListener.lookupTransform("map", "camera_link", rospy.Time(0))
-      print("wanderer translate from map origin: x={}, y={}".format(trans[0], trans[1]))
-      print("wanderer rotate from map(quaternion)".format(rot))
-      if not close2home(trans[0], trans[1]):
-        # compute control command
-        angular = math.atan2(trans[1], trans[0])
-        linear = 0.5 * math.sqrt(trans[0] ** 2 + trans[1] ** 2)
-        self.cmd.linear.x = linear
-        self.cmd.angular.z = angular
-        self.cmd_vel.publish(self.cmd)
-      else:
-        self.clean_shutdown()
-        print("wanderer is home!!!")
+      # trans = [0,10,100] # debug
+      # rot = [1, 2, 3, 4] # debug
+      (trans,rot) = self.posListener.lookupTransform("/map", "/camera_link", rospy.Time(0))
+      # print("wanderer translate from map origin: x={}, y={}".format(trans[0], trans[1]))
+      # print("wanderer rotate from map(quaternion): {}".format(rot))
+      # if not close2target(trans[0], trans[1]):
+      #   # compute control command
+      #   angular = math.atan2(trans[1], trans[0])
+      #   linear = 0.5 * math.sqrt(trans[0] ** 2 + trans[1] ** 2)
+      #   self.cmd.linear.x = linear
+      #   self.cmd.angular.z = angular
+      #   self.cmd_vel.publish(self.cmd)
+      # else:
+      #   self.clean_shutdown()
+      #   print("wanderer is home!!!")
 
   def clean_shutdown(self):
     print("\n\nTurning off the wanderer...")
