@@ -17,8 +17,8 @@ if __name__ == '__main__':
   rate = rospy.Rate(10.0)
   while not rospy.is_shutdown():
     try:
-      (trans,rot) = listener.lookupTransform('/map', '/camera_link', rospy.Time(0))
-      print(trans, rot)
+      (trans,quat) = listener.lookupTransform('/map', '/camera_link', rospy.Time(0))
+      print("x={:.3f},y={:.3f},alpha={:.3f}".format(trans[0],trans[1],tf.transformations.euler_from_quaternion(quat)[2]))
     except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
       continue
 

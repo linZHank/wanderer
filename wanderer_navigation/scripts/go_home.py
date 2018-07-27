@@ -7,8 +7,8 @@ import tf
 import numpy as np
 import geometry_msgs.msg
 
-def close2target(x, y):
-  return np.linalg.norm([x, y]) <= 0.1
+def closeHome(position):
+  return np.linalg.norm(position) <= 0.1
   
 class WandererDriver():
   """
@@ -16,8 +16,10 @@ class WandererDriver():
   """
   def __init__(self):
     # parameters
-    self.pos_x = np.inf
-    self.pos_y = np.inf
+    self.x = 1
+    self.y = 1
+    self.alpha = 0
+    self.beta = 0
     self.posListener = tf.TransformListener()
     self.cmd = geometry_msgs.msg.Twist()
     self.stop_cmd = geometry_msgs.msg.Twist()
@@ -26,7 +28,7 @@ class WandererDriver():
     # methods
     self.cmd_vel = rospy.Publisher("/cmd_vel", geometry_msgs.msg.Twist, queue_size=1)
 
-  def goHome(self):
+  def go_home(self):
     """
     Guide wanderer go back to map origin
     """
@@ -34,19 +36,28 @@ class WandererDriver():
     while not rospy.is_shutdown():
       # trans = [0,10,100] # debug
       # rot = [1, 2, 3, 4] # debug
-      (trans,rot) = self.posListener.lookupTransform("/map", "/camera_link", rospy.Time(0))
-      # print("wanderer translate from map origin: x={}, y={}".format(trans[0], trans[1]))
-      # print("wanderer rotate from map(quaternion): {}".format(rot))
-      # if not close2target(trans[0], trans[1]):
-      #   # compute control command
-      #   angular = math.atan2(trans[1], trans[0])
-      #   linear = 0.5 * math.sqrt(trans[0] ** 2 + trans[1] ** 2)
-      #   self.cmd.linear.x = linear
-      #   self.cmd.angular.z = angular
-      #   self.cmd_vel.publish(self.cmd)
-      # else:
-      #   self.clean_shutdown()
-      #   print("wanderer is home!!!")
+      try:
+        (trans,quat) = self.posListener.lookupTransform("/map", "/camera_link", rospy.Time(0))
+        # (trans,rot) = listener.lookupTransform('/map', '/camera_link', rospy.Time(0))
+        # print(trans, rot)
+      except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
+        continue
+      self.x = trans[0]
+      self.y = trans[1]
+      rpy = tf.transformations.euler_from_quaternion(quat)
+      self.alpha = rpy[2] # approximate to camera_link's planar orientation
+      self.beta = math.atan2(-self.x, -self.y) # angular difference from map origin to wanderer
+      print("x={:.3f}, y={:.3f}, aplha={:.3f}".format(self.x, self.y, self.alpha))
+      if not closeHome([self.x, self.y]):
+        # compute control command
+        angular = self.beta - self.alpha # 
+        linear = math.sqrt(self.x ** 2 + self.y ** 2)
+        self.cmd.linear.x = linear
+        self.cmd.angular.z = angular
+        self.cmd_vel.publish(self.cmd)
+      else:
+        self.clean_shutdown()
+        print("wanderer is home!!!")
 
   def clean_shutdown(self):
     print("\n\nTurning off the wanderer...")
@@ -57,8 +68,10 @@ def main():
   rospy.init_node('wanderer_gohome')
   homerunner = WandererDriver()
   rospy.on_shutdown(homerunner.clean_shutdown)
-  homerunner.goHome()
+  homerunner.go_home()
   rospy.spin()
   
 if __name__ == '__main__':
+  #global listener
+  #listener = tf.TransformListener()
   main()
