@@ -8,12 +8,10 @@ import numpy as np
 from geometry_msgs.msg import Pose
 from geometry_msgs.msg import Twist
 
-def closeHome(position):
-  return np.linalg.norm(position) <= 0.1
-  
-class WandererDriver():
+
+class CameraPoser():
   """
-  WandererDriver drives wanderer robot
+  Test /camera_pose subscriber
   """
   def __init__(self):
     # parameters
@@ -44,37 +42,28 @@ class WandererDriver():
     self.beta = math.atan2(-self.x, -self.y) # angular difference from map origin to wanderer
     print("x={:.3f}, y={:.3f}, aplha={:.3f}".format(self.x, self.y, self.alpha))
 
-  def go_home(self):
+  def read_pose(self):
     """
     Guide wanderer go back to map origin
     """
     rate = rospy.Rate(10.0)
     while not rospy.is_shutdown():
-      #self.sub_campose()
-      if not closeHome([self.x, self.y]):
-        # compute control command
-        angular = self.beta - self.alpha # 
-        linear = math.sqrt(self.x ** 2 + self.y ** 2)
-        self.cmd.linear.x = linear
-        self.cmd.angular.z = angular
-        self.cmd_vel.publish(self.cmd)
-      else:
-        self.clean_shutdown()
-        print("wanderer is home!!!")
-        
+      # self.sub_campose()
+      rospy.loginfo("\n===============>Look, new pose coming in...\n")
       rate.sleep()
-
+      
   def clean_shutdown(self):
-    print("\n\nTurning off the wanderer...")
-    self.cmd_vel.publish(self.stop_cmd)
+    print("\n\nTurning off the poser...")
     return True    
 
 def main():
-  rospy.init_node('wanderer_gohome')
-  homerunner = WandererDriver()
-  rospy.on_shutdown(homerunner.clean_shutdown)
-  homerunner.go_home()
+  rospy.init_node('read_campose')
+  poser = CameraPoser()
+  rospy.on_shutdown(poser.clean_shutdown)
+  poser.read_pose()
   rospy.spin()
   
 if __name__ == '__main__':
+  #global listener
+  #listener = tf.TransformListener()
   main()
