@@ -1,5 +1,5 @@
 ## copy file when ssh
-[link](https://unix.stackexchange.com/questions/106480/how-to-copy-files-from-one-machine-to-another-using-ssh)
+Refer to this [answer](https://unix.stackexchange.com/questions/106480/how-to-copy-files-from-one-machine-to-another-using-ssh) <br/>
 To copy a file from `B` to `A` while logged into `B`: <br/>
 `$ scp /path/to/file username@a:/path/to/destination` <br/>
 To copy a file from B to A while logged into A: <br/>
