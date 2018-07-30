@@ -9,7 +9,7 @@ from geometry_msgs.msg import Pose
 from geometry_msgs.msg import Twist
 
 def closeHome(position):
-  return np.linalg.norm(position) <= 0.1
+  return np.linalg.norm(position) <= 0.4
   
 class WandererDriver():
   """
@@ -53,8 +53,8 @@ class WandererDriver():
       #self.sub_campose()
       if not closeHome([self.x, self.y]):
         # compute control command
-        angular = self.beta - self.alpha # 
-        linear = math.sqrt(self.x ** 2 + self.y ** 2)
+        angular = 0.4*(self.beta - self.alpha) # 
+        linear = 0.8*(math.sqrt(self.x ** 2 + self.y ** 2))
         self.cmd.linear.x = linear
         self.cmd.angular.z = angular
         self.cmd_vel.publish(self.cmd)
