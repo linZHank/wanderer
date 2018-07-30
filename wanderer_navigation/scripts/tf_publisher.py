@@ -10,7 +10,7 @@ from std_msgs.msg import String
 def tf_publisher():
   rospy.init_node("tf_pub", anonymous=True)
   listener = tf.TransformListener()
-  pub = rospy.Publisher('camera_pos', Pose, queue_size=10)
+  pub = rospy.Publisher('camera_pose', Pose, queue_size=10)
   rate = rospy.Rate(10.0)
   while not rospy.is_shutdown():
     try:
