@@ -5,7 +5,8 @@ import rospy
 import math
 import tf
 import numpy as np
-import geometry_msgs.msg
+from geometry_msgs.msg import Pose
+from geometry_msgs.msg import Twist
 
 def closeHome(position):
   return np.linalg.norm(position) <= 0.1
@@ -16,17 +17,32 @@ class WandererDriver():
   """
   def __init__(self):
     # parameters
-    self.x = 1
-    self.y = 1
+    self.x = np.inf
+    self.y = np.inf
     self.alpha = 0
     self.beta = 0
-    self.posListener = tf.TransformListener()
-    self.cmd = geometry_msgs.msg.Twist()
-    self.stop_cmd = geometry_msgs.msg.Twist()
+    self.cmd = Twist()
+    self.stop_cmd = Twist()
     self.stop_cmd.linear.x = 0
     self.stop_cmd.angular.z = 0
     # methods
-    self.cmd_vel = rospy.Publisher("/cmd_vel", geometry_msgs.msg.Twist, queue_size=1)
+    self.sub_campose = rospy.Subscriber("/camera_pose", Pose, self.cb_func)
+    self.cmd_vel = rospy.Publisher("/cmd_vel", Twist, queue_size=1)
+
+  def cb_func(self, data):
+    rospy.loginf("\n$$$ camera_link pose read in $$$\n")
+    self.x = data.position.x
+    self.y = data.position.y
+    quat = [
+      data.orientation.x,
+      data.orientation.y,
+      data.orientation.z,
+      data.orientation.w
+    ]
+    rpy = tf.transformations.euler_from_quaternion(quat)
+    self.alpha = rpy[2] # approximate to camera_link's planar orientation
+    self.beta = math.atan2(-self.x, -self.y) # angular difference from map origin to wanderer
+    print("x={:.3f}, y={:.3f}, aplha={:.3f}".format(self.x, self.y, self.alpha))
 
   def go_home(self):
     """
@@ -34,20 +50,7 @@ class WandererDriver():
     """
     rate = rospy.Rate(10.0)
     while not rospy.is_shutdown():
-      # trans = [0,10,100] # debug
-      # rot = [1, 2, 3, 4] # debug
-      try:
-        (trans,quat) = self.posListener.lookupTransform("/map", "/camera_link", rospy.Time(0))
-        # (trans,rot) = listener.lookupTransform('/map', '/camera_link', rospy.Time(0))
-        # print(trans, rot)
-      except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
-        continue
-      self.x = trans[0]
-      self.y = trans[1]
-      rpy = tf.transformations.euler_from_quaternion(quat)
-      self.alpha = rpy[2] # approximate to camera_link's planar orientation
-      self.beta = math.atan2(-self.x, -self.y) # angular difference from map origin to wanderer
-      print("x={:.3f}, y={:.3f}, aplha={:.3f}".format(self.x, self.y, self.alpha))
+      self.sub_campose()
       if not closeHome([self.x, self.y]):
         # compute control command
         angular = self.beta - self.alpha # 
