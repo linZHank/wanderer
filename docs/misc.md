@@ -10,7 +10,7 @@ Spinning too fast may cause SLAM fail. By investigating `/cmd_vel`, max "turn sp
 
 ## Monitor power input
 Refer to this [post](https://devtalk.nvidia.com/default/topic/1000830/jetson-tx2-ina226-power-monitor-with-i2c-interface-/) <br/>
-`$ cat /sys/devices/3160000.i2c/i2c-0/0-0040/iio_device/`*`rail_name_*`*
+`$ cat /sys/devices/3160000.i2c/i2c-0/0-0040/iio_device/rail_name_*`
 substitute *`rail_name_*`* to following as you wish
 ```
 VDD_SYS_GPU
