@@ -8,6 +8,10 @@ import numpy as np
 from geometry_msgs.msg import Pose
 from geometry_msgs.msg import Twist
 
+
+# Offset two wheels' speed by adding a term to angular speed in /cmd_vel
+WHEEL_OFFSET = 0.1 # increase right-wheel spinning
+
 def closeHome(position):
   return np.linalg.norm(position) <= 0.4
   
@@ -52,9 +56,16 @@ class WandererDriver():
     while not rospy.is_shutdown():
       #self.sub_campose()
       if not closeHome([self.x, self.y]):
-        # compute control command
-        angular = 0.4*(self.beta - self.alpha) # 
-        linear = 0.8*(math.sqrt(self.x ** 2 + self.y ** 2))
+        if math.fabs(self.beta-self.alpha) > 0.3:  # first aims at home          
+          angular = self.beta - self.alpha + WHEEL_OFFSET #
+          if angular > 0.6:
+            angular = 0.6
+          elif angular < -0.6:
+            angular = -0.6
+          linear = 0
+        else:  # then move straight forward
+          linear = math.sqrt(self.x ** 2 + self.y ** 2)
+          angular = 0 + WHEEL_OFFSET
         self.cmd.linear.x = linear
         self.cmd.angular.z = angular
         self.cmd_vel.publish(self.cmd)
@@ -78,3 +89,4 @@ def main():
   
 if __name__ == '__main__':
   main()
+ 
