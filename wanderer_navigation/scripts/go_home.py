@@ -59,7 +59,7 @@ class WandererDriver():
     while not rospy.is_shutdown():
       #self.sub_campose()
       if not closeHome([self.x, self.y]):
-        if self.turn > 0.2:  # first aims at home          
+        if math.fabs(self.turn) > 0.2:  # first aims at home          
           angular = self.turn + WHEEL_OFFSET #
           if angular > 0.1:
             angular = 0.1 + WHEEL_OFFSET

@@ -1,16 +1,20 @@
+#!/usr/bin/env python
 from __future__ import print_function
+
 import numpy as np
 import math
 import random
 import time
 import rospy
+import tf
 from geometry_msgs.msg import Point, Pose, Twist
 
-from utils import generatePoint2D, bcolors
+from utils import generatePoint2D, bcolors, close2Home
+
+WHEEL_OFFSET = 0
 
 
-
-class WandererDriver():
+class Wanderer():
   """
   Wanderer class
   """
@@ -18,7 +22,9 @@ class WandererDriver():
     # parameters
     self.x = np.inf 
     self.y = np.inf
-    self.alpha = 0 # approx. planar orientation 
+    self.alpha = 0 # approx. planar orientation
+    # self.beta = 0
+    # self.turn = 0 # angular velocity control command
     self.reward = 0
     self.goal = Point()
     self.cmd = Twist()
@@ -47,6 +53,9 @@ class WandererDriver():
     rpy = tf.transformations.euler_from_quaternion(quat)
     self.alpha = rpy[2] # approximate to camera_link's planar orientation
     # print("x={:.3f}, y={:.3f}, aplha={:.3f}".format(self.x, self.y, alpha))
+    # self.beta = math.atan2(self.y, self.x) # angular difference from map origin to wanderer
+    # self.turn = -math.atan2(-math.sin(self.alpha-self.beta),
+    #                               -math.cos(self.alpha-self.beta))
     self.reward = -np.linalg.norm(
       np.array([self.x, self.y])-np.array([self.goal.x, self.goal.y])
     ) # negative distance
@@ -92,24 +101,25 @@ class WandererDriver():
     Guide wanderer go back to map origin
     """
     rate = rospy.Rate(10.0)
-    alpha = self.alpha
-    beta = math.atan2(self.y, self.x) # angular difference from map origin to wanderer
-    angular_vel = -math.atan2(-math.sin(alpha-beta), -math.cos(alpha-beta))
     # print("turn your head {}".format(angular_vel))
     while not rospy.is_shutdown():
-      if not closeHome([self.x, self.y]):
+      alpha = self.alpha
+      beta = math.atan2(self.y, self.x)
+      angular_vel = -math.atan2(-math.sin(alpha-beta),
+                                -math.cos(alpha-beta))
+      if not close2Home([self.x, self.y]):
         if math.fabs(angular_vel) > 0.1:  # first aims at home          
           angular_vel += WHEEL_OFFSET #
-          if angular > 0.1:
+          if angular_vel > 0.1:
             angular_vel = 0.1 + WHEEL_OFFSET
-          elif angular < -0.1:
+          elif angular_vel < -0.1:
             angular_vel = -0.1 + WHEEL_OFFSET
-          linear = 0
+          linear_vel = 0
         else:  # then move straight forward
           linear_vel = math.sqrt(self.x ** 2 + self.y ** 2)
-          if linear > 0.2:
+          if linear_vel > 0.2:
             linear_vel = 0.2
-          elif linear < -0.2:
+          elif linear_vel < -0.2:
             linear_vel = -0.2
           angular_vel = 0 + WHEEL_OFFSET
         self.cmd.linear.x = linear_vel

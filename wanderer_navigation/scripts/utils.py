@@ -12,6 +12,12 @@ def generatePoint2D():
   y = np.random.uniform(low=-0.75, high=0.75)
   return np.array((x, y))
 
+def close2Home(position):
+  """Helper function determins whether wanderer is close to (0,0)
+  """
+  return np.linalg.norm(position) <= 0.2
+
+
 class bcolors:
   """ 
   For the sake of printing in colors
