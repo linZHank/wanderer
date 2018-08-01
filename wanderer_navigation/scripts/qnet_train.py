@@ -17,20 +17,37 @@ class QnetWanderer(Wanderer): # need create Wanderer class
       ## also try 1 layer model
       states_node = tf.placeholder(dtype=tf.float32, shape=(1,INPUT_LAYER_SIZE))
       qvalue_node = tf.placeholder(dtype=tf.float32, shape=(1,OUTPUT_LAYER_SIZE))
-      w1 = tf.Variable(tf.truncated_normal(
-        shape=[INPUT_LAYER_SIZE, HIDDEN_LAYER_SIZE],
-        stddev = 0.01, dtype=tf.float32
-      ))
-      b1 = tf.Variable(tf.constant(value=0.01, shape=[HIDDEN_LAYER_SIZE], dtype=tf.float32))
-      w2 = tf.Variable(tf.truncated_normal(shape=[HIDDEN_LAYER_SIZE, OUTPUT_LAYER_SIZE],
-                                             stddev = 0.01, dtype=tf.float32))
-      b2 = tf.Variable(tf.constant(value=0.01, shape=[OUTPUT_LAYER_SIZE], dtype=tf.float32))
+      w1 = tf.Variable(
+        tf.truncated_normal(
+          shape=[INPUT_LAYER_SIZE, HIDDEN_LAYER_SIZE],
+          stddev = 0.01, dtype=tf.float32
+        )
+      )
+      b1 = tf.Variable(
+        tf.constant(
+          value=0.01, shape=[HIDDEN_LAYER_SIZE],
+          dtype=tf.float32
+        )
+      )
+      w2 = tf.Variable(
+        tf.truncated_normal(
+          shape=[HIDDEN_LAYER_SIZE, OUTPUT_LAYER_SIZE],
+          stddev = 0.01, dtype=tf.float32
+        )
+      )
+      b2 = tf.Variable(
+        tf.constant(
+          value=0.01,
+          shape=[OUTPUT_LAYER_SIZE],
+          dtype=tf.float32
+        )
+      )
       ## define the neural network
-      def model(input_states):
+      def qnet(input_states):
         hidden = tf.nn.relu(tf.matmul(input_states, w1) + b1)
         return tf.matmul(hidden, w2) + b2
       ## output
-      q_values = model(states_node)
+      q_values = qnet(states_node)
       ## predictions, also try tf.nn.softmax(q_values)
       prediction = tf.argmax(q_values, axis=1)
       # Loss function, also try tf.reduce_sum(tf.square(qvalue_node - q_values))
@@ -55,19 +72,20 @@ class QnetWanderer(Wanderer): # need create Wanderer class
       #     staircase=True)
       ## optimizer, try MomentumOptimizer, AdamOptimizer, etc
       optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.01).minimize(loss)
-        
+      
+      # Training session
       with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
         rate = rospy.Rate(self.freq)
         for epoch in range(NUM_EPOCHS):
           # reset environment
-          self.reset_env()
+          self.set_goal() # need to be written
           step = 0
           accumulated_reward = 0
           out = False
           while step < MAX_STEP and not out and not rospy.is_shutdown():
             print(
-              bcolors.OKBLUE, "::: Epoch {0:d}, Step {1:d}, Time Elapsed: {2:.7f}".format(
+              bcolors.OKBLUE, "::: Epoch {0:d}, Step {1:d}, Time Elapsed: {2:.4f}\n".format(
                 epoch,
                 step,
                 self.time_elapse
@@ -75,7 +93,7 @@ class QnetWanderer(Wanderer): # need create Wanderer class
               bcolors.ENDC
             )
             # initial joint states
-            ob, _, out = self.observe_env()
+            ob, _, = self.observe_env()
             q, argmax_q = sess.run(
                 [q_values, prediction],
                 feed_dict={states_node:np.array(ob).reshape(1,4)}
@@ -92,14 +110,17 @@ class QnetWanderer(Wanderer): # need create Wanderer class
             rate.sleep()
             # obtain new observation from environment
             ob, reward, out = self.observe_env()
-            q_next = sess.run(q_values, feed_dict={states_node:np.array(ob).reshape(1,4)})
+            q_next = sess.run(
+              q_values,
+              feed_dict={states_node:np.array(ob).reshape(1,INPUT_LAYER_SIZE)}
+            )
             max_q_next = np.max(q_next)
             target_q = q
             target_q[0, action_index] = reward + gamma * max_q_next
             # train network using target_q and q, remember loss = square(target_q-q)
             opt = sess.run(
               optimizer,
-              feed_dict={states_node:np.array(ob).reshape(1,4),
+              feed_dict={states_node:np.array(ob).reshape(1,INPUT_LAYER_SIZE),
               qvalue_node:target_q}
             )
             accumulated_reward += reward
