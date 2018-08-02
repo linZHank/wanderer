@@ -1,3 +1,22 @@
+#!/usr/bin/env python
+"""
+Train a Q value neural network to navigate the wanderer back to map origin from any location
+"""
+# Reinforement learning environment related settings
+## Discrete actions
+ACTIONS = () # discrete velocity command
+NUM_ACTIONS = len(ACTIONS)
+## Neural Network parameters
+INPUT_LAYER_SIZE = 4
+HIDDEN_LAYER_SIZE = 128
+OUTPUT_LAYER_SIZE = NUM_ACTIONS
+## Simulation related constans
+NUM_EPOCHS = 1000
+MAX_STEP = 250
+STREAK_TO_END = 120
+MIN_EXPLORE_RATE = 0.05
+
+
 class QnetWanderer(Wanderer): # need create Wanderer class
   """
   Inherent from Wanderer class and add q-learning method 
