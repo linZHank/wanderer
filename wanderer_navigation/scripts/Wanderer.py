@@ -108,7 +108,7 @@ class Wanderer():
       angular_vel = -math.atan2(-math.sin(alpha-beta),
                                 -math.cos(alpha-beta))
       if not close2Home([self.x, self.y]):
-        if math.fabs(angular_vel) > 0.1:  # first aims at home          
+        if math.fabs(angular_vel) > 0.32:  # first aims at home          
           angular_vel += WHEEL_OFFSET #
           if angular_vel > 0.1:
             angular_vel = 0.1 + WHEEL_OFFSET
