@@ -4,7 +4,17 @@ Useful functions and classes for wanderer
 
 from __future__ import print_function
 import numpy as np
+from geometry_msgs.msg import Twist
 
+
+def action2Twist(action):
+  """ 
+  Helper function convert numpy array action into geomtry_msgs Twist
+  """
+  cmd_vel = Twist()
+  cmd_vel.linear.x = action[0]
+  cmd_vel.angular.z = action[1]
+  return cmd_vel
 
 def generatePoint2D():
   """Helper function for generate 2d point"""

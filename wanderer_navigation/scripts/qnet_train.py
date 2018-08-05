@@ -1,11 +1,27 @@
 #!/usr/bin/env python
+import numpy as np
+import rospy
+import tensorflow as tf
+from Wanderer import Wanderer
+from utils import action2Twist
+
+
 """
 Train a Q value neural network to navigate the wanderer back to map origin from any location
 """
 # Reinforement learning environment related settings
 ## Discrete actions
-ACTIONS = () # discrete velocity command
-NUM_ACTIONS = len(ACTIONS)
+linear = np.linspace(-.2, .2, num=5) # linear actions
+angular = np.linspace(-.2, .2, num=5) # angular actions
+lin_ang = np.empty(
+  (
+    linear.shape[0],
+    angular.shape[0],
+    2
+  )
+)
+ACTIONS = lin_ang.reshape(-1,2) # discrete velocity command
+NUM_ACTIONS = ACTIONS.shape[0]
 ## Neural Network parameters
 INPUT_LAYER_SIZE = 4
 HIDDEN_LAYER_SIZE = 128
@@ -122,7 +138,7 @@ class QnetWanderer(Wanderer): # need create Wanderer class
             if np.random.rand(1)[0] < epsilon:
               action_index = random.randrange(0,NUM_ACTIONS)
               print(bcolors.WARNING, "!!! Action selected randomly !!!", bcolors.ENDC)
-            action = ACTIONS[action_index]
+            action = action2Twist(ACTIONS[action_index])
             # apply action
             self.take_action(action)
             # give environment some time to obtain new observation
