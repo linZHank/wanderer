@@ -74,7 +74,7 @@ class Wanderer():
     self.goal.z = 0
     self.set_goal.publish(self.goal)
     print(bcolors.WARNING,
-      "\n...Setting wanderer's new destination @ x={}, y={}...\n".format(newgoal[0], newgoal[1]),
+      "\n...Setting wanderer's new destination @ x={}, y={}...\n".format(new_goal[0], new_goal[1]),
       bcolors.ENDC
     )
     while not rospy.is_shutdown() and counter < self.reset_dur*self.freq:
