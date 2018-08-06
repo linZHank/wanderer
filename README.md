@@ -7,8 +7,8 @@
 `$ roslaunch ca_driver create_2.launch`
 
 #### Remote control
-**joypad: ** `$ roslaunch ca_tools joy_teleop.launch [joy_config:=log710]` <br/>
-**keyboard: ** `$ rosrun teleop_twist_wasd teleop_twist_wasd.py`
+**joypad\:** `$ roslaunch ca_tools joy_teleop.launch [joy_config:=log710]` <br/>
+**keyboard\:** `$ rosrun teleop_twist_wasd teleop_twist_wasd.py`
 
 #### Bring up realsense
 `$ roslaunch realsense2_camera rs_camera.launch align_depth:=true`
