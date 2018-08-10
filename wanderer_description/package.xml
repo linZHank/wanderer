@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>wanderer_description</name>
+  <version>0.0.0</version>
+  <description>Robot URDF descriptions for wanderer based on irobot create2</description>
+
+  <maintainer email="linzhank@gmail.com">LinZHanK</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website">https://github.com/linZHank/wanderer</url>
+
+  <author email="linzhank@gmail.com">LinZHanK</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roslaunch</build_depend>
+
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>urdf</exec_depend>
+  <exec_depend>xacro</exec_depend>
+
+  <export>
+  </export>
+</package>
