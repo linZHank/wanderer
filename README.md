@@ -3,8 +3,8 @@
 ## Get Wanderer ready for work
 
 #### Bring up Create2 base
-Make sure you connet to wifi "w1010nderer"
-`$ ssh nvidia@192.168.1.3`
+Make sure you connet to wifi "w1010nderer" <br/>
+`$ ssh nvidia@192.168.1.3` <br/>
 `$ roslaunch ca_driver create_2.launch`
 
 #### (Optional)Remote control
